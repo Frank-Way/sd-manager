@@ -31,8 +31,18 @@ public class TargetImage extends Image implements Serializable {
     }
 
     @Override
+    public TargetImageBuilder toBuilder() {
+        TargetImageBuilder builder = new TargetImageBuilder(this.name)
+                .checkpoint(this.checkpoint)
+                .sampler(this.sampler)
+                .rating(this.rating);
+        fillBuilder(builder);
+        return builder;
+    }
+
+    @Override
     public TargetImage copy() {
-        return new TargetImage(name, description, width, height, rating, sampler, checkpoint);
+        return toBuilder().build();
     }
 
     @Override

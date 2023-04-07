@@ -35,6 +35,12 @@ public abstract class Image implements Serializable {
         return description;
     }
 
+    public abstract ImageBuilder toBuilder();
+
+    protected void fillBuilder(ImageBuilder builder) {
+        builder.height(this.height).width(this.width).description(this.description);
+    }
+
     public abstract Image copy();
 
     @Override

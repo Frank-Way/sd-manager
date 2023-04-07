@@ -1,7 +1,6 @@
 package nogroup.inpaint.image.source;
 
 import nogroup.inpaint.image.Image;
-import nogroup.inpaint.image.ImageBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,10 +9,6 @@ import java.util.Objects;
 
 public class SourceImage extends Image implements Serializable {
     private final List<String> tags;
-
-    public SourceImage() {
-        this(null, null, 0, 0, null);
-    }
 
     public SourceImage(String name, String description, int width, int height, List<String> tags) {
         super(name, description, width, height);
@@ -25,8 +20,16 @@ public class SourceImage extends Image implements Serializable {
     }
 
     @Override
+    public SourceImageBuilder toBuilder() {
+        SourceImageBuilder builder = new SourceImageBuilder(this.name)
+                .tags(new ArrayList<>(this.tags));
+        fillBuilder(builder);
+        return builder;
+    }
+
+    @Override
     public SourceImage copy() {
-        return new SourceImage(name, description, width, height, new ArrayList<>(tags));
+        return toBuilder().build();
     }
 
     @Override
