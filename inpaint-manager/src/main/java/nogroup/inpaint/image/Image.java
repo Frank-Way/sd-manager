@@ -61,31 +61,4 @@ public abstract class Image implements Serializable {
         return sb.toString();
     }
 
-    public abstract static class Builder {
-        protected final String name;
-        protected String description;
-        protected int width;
-        protected int height;
-
-        public Builder(String name) {
-            this.name = name;
-        }
-
-        public Builder description(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder width(int width) {
-            this.width = width;
-            return this;
-        }
-
-        public Builder height(int height) {
-            this.height = height;
-            return this;
-        }
-
-        public abstract Image build();
-    }
 }

@@ -3,7 +3,9 @@ package nogroup.inpaint.image.repository;
 import nogroup.inpaint.image.repository.impl.FileRepository;
 import nogroup.inpaint.image.repository.impl.InMemoryRepository;
 import nogroup.inpaint.image.source.SourceImage;
+import nogroup.inpaint.image.source.SourceImageBuilder;
 import nogroup.inpaint.image.target.TargetImage;
+import nogroup.inpaint.image.target.TargetImageBuilder;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.IOException;
@@ -33,10 +35,10 @@ public class RepositoryTest {
         Map<SourceImage, TargetImage[]> map = new HashMap<>();
 
         for (int i = 0; i < sourcesCount; i++) {
-            SourceImage source = new SourceImage.Builder(sourceImageName(i)).build();
+            SourceImage source = new SourceImageBuilder(sourceImageName(i)).build();
             TargetImage[] targets = new TargetImage[Math.max(0, targetsCount)];
             for (int j = 0; j < targetsCount; j++)
-                targets[j] = new TargetImage.Builder(targetImageName(i, j)).build();
+                targets[j] = new TargetImageBuilder(targetImageName(i, j)).build();
             map.put(source, targets);
         }
 
@@ -122,40 +124,40 @@ public class RepositoryTest {
                         populatedRepo(0),
                         null,
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(1)).build(), new TargetImage[]{}},
-                                {new SourceImage.Builder(sourceImageName(2)).build(), new TargetImage[]{}},
+                                {new SourceImageBuilder(sourceImageName(1)).build(), new TargetImage[]{}},
+                                {new SourceImageBuilder(sourceImageName(2)).build(), new TargetImage[]{}},
                         }),
                         Arrays.asList(
-                                new SourceImage.Builder(sourceImageName(1)).build(),
-                                new SourceImage.Builder(sourceImageName(2)).build()
+                                new SourceImageBuilder(sourceImageName(1)).build(),
+                                new SourceImageBuilder(sourceImageName(2)).build()
                         ),
                         Arrays.asList(
-                                new SourceImage.Builder(sourceImageName(1)).build(),
-                                new SourceImage.Builder(sourceImageName(2)).build()
+                                new SourceImageBuilder(sourceImageName(1)).build(),
+                                new SourceImageBuilder(sourceImageName(2)).build()
                         )
                 ),
                 new Testcase("add existing source",
                         populatedRepo(2),
                         new AlreadyExistsException("duplicate source nogroup.inpaint.image:"),
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{}},
-                                {new SourceImage.Builder(sourceImageName(1)).build(), new TargetImage[]{}},
-                                {new SourceImage.Builder(sourceImageName(2)).build(), new TargetImage[]{}},
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{}},
+                                {new SourceImageBuilder(sourceImageName(1)).build(), new TargetImage[]{}},
+                                {new SourceImageBuilder(sourceImageName(2)).build(), new TargetImage[]{}},
                         }),
                         Arrays.asList(
-                                new SourceImage.Builder(sourceImageName(1)).build(),
-                                new SourceImage.Builder(sourceImageName(2)).build()
+                                new SourceImageBuilder(sourceImageName(1)).build(),
+                                new SourceImageBuilder(sourceImageName(2)).build()
                         ),
                         Arrays.asList(
                                 null,
-                                new SourceImage.Builder(sourceImageName(2)).build()
+                                new SourceImageBuilder(sourceImageName(2)).build()
                         )
                 ),
                 new Testcase("add null source",
                         populatedRepo(1),
                         new NullPointerException(),
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{}},
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{}},
                         }),
                         Arrays.asList(null, null),
                         Arrays.asList(null, null)
@@ -164,9 +166,9 @@ public class RepositoryTest {
                         populatedRepo(1),
                         new AlreadyExistsException("duplicate source nogroup.inpaint.image:"),
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{}},
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{}},
                         }),
-                        Arrays.asList(new SourceImage.Builder(sourceImageName(0)).width(123).build()),
+                        Arrays.asList(new SourceImageBuilder(sourceImageName(0)).width(123).build()),
                         Arrays.asList(null, null)
                 ),
         };
@@ -209,35 +211,35 @@ public class RepositoryTest {
                         populatedRepo(1),
                         null,
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{
-                                        new TargetImage.Builder(targetImageName(0, 0)).build(),
-                                        new TargetImage.Builder(targetImageName(0, 1)).build(),
-                                        new TargetImage.Builder(targetImageName(0, 2)).build()
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{
+                                        new TargetImageBuilder(targetImageName(0, 0)).build(),
+                                        new TargetImageBuilder(targetImageName(0, 1)).build(),
+                                        new TargetImageBuilder(targetImageName(0, 2)).build()
                                 }}
                         }),
-                        new SourceImage.Builder(sourceImageName(0)).build(),
+                        new SourceImageBuilder(sourceImageName(0)).build(),
                         Arrays.asList(
-                                new TargetImage.Builder(targetImageName(0, 0)).build(),
-                                new TargetImage.Builder(targetImageName(0, 1)).build(),
-                                new TargetImage.Builder(targetImageName(0, 2)).build()
+                                new TargetImageBuilder(targetImageName(0, 0)).build(),
+                                new TargetImageBuilder(targetImageName(0, 1)).build(),
+                                new TargetImageBuilder(targetImageName(0, 2)).build()
                         ),
                         Arrays.asList(
-                                new TargetImage.Builder(targetImageName(0, 0)).build(),
-                                new TargetImage.Builder(targetImageName(0, 1)).build(),
-                                new TargetImage.Builder(targetImageName(0, 2)).build()
+                                new TargetImageBuilder(targetImageName(0, 0)).build(),
+                                new TargetImageBuilder(targetImageName(0, 1)).build(),
+                                new TargetImageBuilder(targetImageName(0, 2)).build()
                         )
                 ),
                 new Testcase("add targets with null source",
                         populatedRepo(1),
                         new NullPointerException(),
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{}}
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{}}
                         }),
                         null,
                         Arrays.asList(
-                                new TargetImage.Builder(targetImageName(0, 0)).build(),
-                                new TargetImage.Builder(targetImageName(0, 1)).build(),
-                                new TargetImage.Builder(targetImageName(0, 2)).build()
+                                new TargetImageBuilder(targetImageName(0, 0)).build(),
+                                new TargetImageBuilder(targetImageName(0, 1)).build(),
+                                new TargetImageBuilder(targetImageName(0, 2)).build()
                         ),
                         Arrays.asList(null, null, null)
                 ),
@@ -245,17 +247,17 @@ public class RepositoryTest {
                         populatedRepo(1),
                         new NullPointerException(),
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{
-                                        new TargetImage.Builder(targetImageName(0, 0)).build()
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{
+                                        new TargetImageBuilder(targetImageName(0, 0)).build()
                                 }}
                         }),
-                        new SourceImage.Builder(sourceImageName(0)).build(),
+                        new SourceImageBuilder(sourceImageName(0)).build(),
                         Arrays.asList(
-                                new TargetImage.Builder(targetImageName(0, 0)).build(),
+                                new TargetImageBuilder(targetImageName(0, 0)).build(),
                                 null
                         ),
                         Arrays.asList(
-                                new TargetImage.Builder(targetImageName(0, 0)).build(),
+                                new TargetImageBuilder(targetImageName(0, 0)).build(),
                                 null
                         )
                 ),
@@ -263,13 +265,13 @@ public class RepositoryTest {
                         populatedRepo(1, 1),
                         new AlreadyExistsException("duplicate target nogroup.inpaint.image:"),
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{
-                                        new TargetImage.Builder(targetImageName(0, 0)).build()
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{
+                                        new TargetImageBuilder(targetImageName(0, 0)).build()
                                 }}
                         }),
-                        new SourceImage.Builder(sourceImageName(0)).build(),
+                        new SourceImageBuilder(sourceImageName(0)).build(),
                         Arrays.asList(
-                                new TargetImage.Builder(targetImageName(0, 0)).height(123).build()
+                                new TargetImageBuilder(targetImageName(0, 0)).height(123).build()
                         ),
                         Arrays.asList(null, null)
                 ),
@@ -277,16 +279,16 @@ public class RepositoryTest {
                         populatedRepo(2, 1),
                         new AlreadyExistsException("target nogroup.inpaint.image assigned to another source nogroup.inpaint.image:"),
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{
-                                        new TargetImage.Builder(targetImageName(0, 0)).build()
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{
+                                        new TargetImageBuilder(targetImageName(0, 0)).build()
                                 }},
-                                {new SourceImage.Builder(sourceImageName(1)).build(), new TargetImage[]{
-                                        new TargetImage.Builder(targetImageName(1, 0)).build()
+                                {new SourceImageBuilder(sourceImageName(1)).build(), new TargetImage[]{
+                                        new TargetImageBuilder(targetImageName(1, 0)).build()
                                 }}
                         }),
-                        new SourceImage.Builder(sourceImageName(0)).build(),
+                        new SourceImageBuilder(sourceImageName(0)).build(),
                         Arrays.asList(
-                                new TargetImage.Builder(targetImageName(1, 0)).build()
+                                new TargetImageBuilder(targetImageName(1, 0)).build()
                         ),
                         Arrays.asList(null, null)
                 ),
@@ -294,11 +296,11 @@ public class RepositoryTest {
                         populatedRepo(1, 0),
                         new NotFoundException("unknown source nogroup.inpaint.image:"),
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{}}
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{}}
                         }),
-                        new SourceImage.Builder(sourceImageName(1)).build(),
+                        new SourceImageBuilder(sourceImageName(1)).build(),
                         Arrays.asList(
-                                new TargetImage.Builder(targetImageName(1, 0)).build()
+                                new TargetImageBuilder(targetImageName(1, 0)).build()
                         ),
                         Arrays.asList(null, null)
                 ),
@@ -306,13 +308,13 @@ public class RepositoryTest {
                         populatedRepo(1, 1),
                         null,
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{
-                                        new TargetImage.Builder(targetImageName(0, 0)).build()
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{
+                                        new TargetImageBuilder(targetImageName(0, 0)).build()
                                 }}
                         }),
-                        new SourceImage.Builder(sourceImageName(0)).build(),
+                        new SourceImageBuilder(sourceImageName(0)).build(),
                         Arrays.asList(
-                                new TargetImage.Builder(targetImageName(0, 0)).build()
+                                new TargetImageBuilder(targetImageName(0, 0)).build()
                         ),
                         Arrays.asList(null, null)
                 ),
@@ -352,14 +354,14 @@ public class RepositoryTest {
                         populatedRepo(3, 3),
                         null,
                         null,
-                        new TargetImage.Builder(targetImageName(0, 1)).build(),
-                        new SourceImage.Builder(sourceImageName(0)).build()
+                        new TargetImageBuilder(targetImageName(0, 1)).build(),
+                        new SourceImageBuilder(sourceImageName(0)).build()
                 ),
                 new Testcase("read source by unknown target",
                         populatedRepo(3, 3),
                         new NotFoundException("unknown target nogroup.inpaint.image:"),
                         null,
-                        new TargetImage.Builder(targetImageName(4, 1)).build(),
+                        new TargetImageBuilder(targetImageName(4, 1)).build(),
                         null
                 ),
         };
@@ -399,7 +401,7 @@ public class RepositoryTest {
                         null,
                         null,
                         sourceImageName(0),
-                        new SourceImage.Builder(sourceImageName(0)).build()
+                        new SourceImageBuilder(sourceImageName(0)).build()
                 ),
                 new Testcase("read source by unknown name",
                         populatedRepo(3, 3),
@@ -449,9 +451,9 @@ public class RepositoryTest {
                         null,
                         null,
                         Arrays.asList(
-                                new SourceImage.Builder(sourceImageName(0)).build(),
-                                new SourceImage.Builder(sourceImageName(1)).build(),
-                                new SourceImage.Builder(sourceImageName(2)).build()
+                                new SourceImageBuilder(sourceImageName(0)).build(),
+                                new SourceImageBuilder(sourceImageName(1)).build(),
+                                new SourceImageBuilder(sourceImageName(2)).build()
                         )
                 ),
                 new Testcase("read 0 sources",
@@ -502,17 +504,17 @@ public class RepositoryTest {
                         populatedRepo(2, 2),
                         null,
                         null,
-                        new SourceImage.Builder(sourceImageName(0)).build(),
+                        new SourceImageBuilder(sourceImageName(0)).build(),
                         Arrays.asList(
-                                new TargetImage.Builder(targetImageName(0, 0)).build(),
-                                new TargetImage.Builder(targetImageName(0, 1)).build()
+                                new TargetImageBuilder(targetImageName(0, 0)).build(),
+                                new TargetImageBuilder(targetImageName(0, 1)).build()
                         )
                 ),
                 new Testcase("read targets by unknown source",
                         populatedRepo(2, 2),
                         new NotFoundException("unknown source nogroup.inpaint.image:"),
                         null,
-                        new SourceImage.Builder(sourceImageName(3)).build(),
+                        new SourceImageBuilder(sourceImageName(3)).build(),
                         Arrays.asList(null, null)
                 ),
         };
@@ -552,7 +554,7 @@ public class RepositoryTest {
                         null,
                         null,
                         targetImageName(0, 0),
-                        new TargetImage.Builder(targetImageName(0, 0)).build()
+                        new TargetImageBuilder(targetImageName(0, 0)).build()
                 ),
                 new Testcase("read unknown target by name",
                         populatedRepo(3, 3),
@@ -598,27 +600,27 @@ public class RepositoryTest {
                         populatedRepo(1),
                         null,
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).width(123).build(), new TargetImage[]{}}
+                                {new SourceImageBuilder(sourceImageName(0)).width(123).build(), new TargetImage[]{}}
                         }),
-                        new SourceImage.Builder(sourceImageName(0)).width(123).build(),
-                        new SourceImage.Builder(sourceImageName(0)).width(123).build()
+                        new SourceImageBuilder(sourceImageName(0)).width(123).build(),
+                        new SourceImageBuilder(sourceImageName(0)).width(123).build()
                 ),
                 new Testcase("update unknown source",
                         populatedRepo(1),
                         new NotFoundException("unknown source nogroup.inpaint.image:"),
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{}}
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{}}
                         }),
-                        new SourceImage.Builder(sourceImageName(1)).width(123).build(),
+                        new SourceImageBuilder(sourceImageName(1)).width(123).build(),
                         null
                 ),
                 new Testcase("update same source",
                         populatedRepo(1),
                         null,
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{}}
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{}}
                         }),
-                        new SourceImage.Builder(sourceImageName(0)).build(),
+                        new SourceImageBuilder(sourceImageName(0)).build(),
                         null
                 ),
         };
@@ -658,33 +660,33 @@ public class RepositoryTest {
                         populatedRepo(1, 1),
                         null,
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{
-                                        new TargetImage.Builder(targetImageName(0, 0)).height(123).build()
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{
+                                        new TargetImageBuilder(targetImageName(0, 0)).height(123).build()
                                 }}
                         }),
-                        new TargetImage.Builder(targetImageName(0, 0)).height(123).build(),
-                        new TargetImage.Builder(targetImageName(0, 0)).height(123).build()
+                        new TargetImageBuilder(targetImageName(0, 0)).height(123).build(),
+                        new TargetImageBuilder(targetImageName(0, 0)).height(123).build()
                 ),
                 new Testcase("update unknown target",
                         populatedRepo(1, 1),
                         new NotFoundException("unknown target nogroup.inpaint.image:"),
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{
-                                        new TargetImage.Builder(targetImageName(0, 0)).build()
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{
+                                        new TargetImageBuilder(targetImageName(0, 0)).build()
                                 }}
                         }),
-                        new TargetImage.Builder(targetImageName(0, 1)).height(123).build(),
+                        new TargetImageBuilder(targetImageName(0, 1)).height(123).build(),
                         null
                 ),
                 new Testcase("update same target",
                         populatedRepo(1, 1),
                         null,
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{
-                                        new TargetImage.Builder(targetImageName(0, 0)).build()
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{
+                                        new TargetImageBuilder(targetImageName(0, 0)).build()
                                 }}
                         }),
-                        new TargetImage.Builder(targetImageName(0, 0)).build(),
+                        new TargetImageBuilder(targetImageName(0, 0)).build(),
                         null
                 ),
         };
@@ -724,19 +726,19 @@ public class RepositoryTest {
                         populatedRepo(2),
                         null,
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(1)).build(), new TargetImage[]{}}
+                                {new SourceImageBuilder(sourceImageName(1)).build(), new TargetImage[]{}}
                         }),
-                        new SourceImage.Builder(sourceImageName(0)).build(),
-                        new SourceImage.Builder(sourceImageName(0)).build()
+                        new SourceImageBuilder(sourceImageName(0)).build(),
+                        new SourceImageBuilder(sourceImageName(0)).build()
                 ),
                 new Testcase("delete unknown source",
                         populatedRepo(2),
                         null,
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{}},
-                                {new SourceImage.Builder(sourceImageName(1)).build(), new TargetImage[]{}}
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{}},
+                                {new SourceImageBuilder(sourceImageName(1)).build(), new TargetImage[]{}}
                         }),
-                        new SourceImage.Builder(sourceImageName(2)).build(),
+                        new SourceImageBuilder(sourceImageName(2)).build(),
                         null
                 ),
         };
@@ -776,23 +778,23 @@ public class RepositoryTest {
                         populatedRepo(1, 2),
                         null,
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{
-                                        new TargetImage.Builder(targetImageName(0, 1)).build()
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{
+                                        new TargetImageBuilder(targetImageName(0, 1)).build()
                                 }}
                         }),
-                        new TargetImage.Builder(targetImageName(0, 0)).build(),
-                        new TargetImage.Builder(targetImageName(0, 0)).build()
+                        new TargetImageBuilder(targetImageName(0, 0)).build(),
+                        new TargetImageBuilder(targetImageName(0, 0)).build()
                 ),
                 new Testcase("delete unknown target",
                         populatedRepo(1, 2),
                         null,
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{
-                                        new TargetImage.Builder(targetImageName(0, 0)).build(),
-                                        new TargetImage.Builder(targetImageName(0, 1)).build()
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{
+                                        new TargetImageBuilder(targetImageName(0, 0)).build(),
+                                        new TargetImageBuilder(targetImageName(0, 1)).build()
                                 }}
                         }),
-                        new TargetImage.Builder(targetImageName(1, 0)).build(),
+                        new TargetImageBuilder(targetImageName(1, 0)).build(),
                         null
                 ),
         };
@@ -838,28 +840,28 @@ public class RepositoryTest {
                         populatedRepo(2, 2),
                         null,
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{
-                                        new TargetImage.Builder(targetImageName(0, 0)).build(),
-                                        new TargetImage.Builder(targetImageName(0, 1)).build()
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{
+                                        new TargetImageBuilder(targetImageName(0, 0)).build(),
+                                        new TargetImageBuilder(targetImageName(0, 1)).build()
                                 }},
-                                {new SourceImage.Builder(sourceImageName(1)).build(), new TargetImage[]{}}
+                                {new SourceImageBuilder(sourceImageName(1)).build(), new TargetImage[]{}}
                         }),
-                        new SourceImage.Builder(sourceImageName(1)).build(),
+                        new SourceImageBuilder(sourceImageName(1)).build(),
                         Arrays.asList(
-                                new TargetImage.Builder(targetImageName(1, 0)).build(),
-                                new TargetImage.Builder(targetImageName(1, 1)).build()
+                                new TargetImageBuilder(targetImageName(1, 0)).build(),
+                                new TargetImageBuilder(targetImageName(1, 1)).build()
                         )
                 ),
                 new Testcase("delete targets of unknown source",
                         populatedRepo(1, 2),
                         new NotFoundException("unknown source nogroup.inpaint.image:"),
                         expectedRepo(new Object[][]{
-                                {new SourceImage.Builder(sourceImageName(0)).build(), new TargetImage[]{
-                                        new TargetImage.Builder(targetImageName(0, 0)).build(),
-                                        new TargetImage.Builder(targetImageName(0, 1)).build()
+                                {new SourceImageBuilder(sourceImageName(0)).build(), new TargetImage[]{
+                                        new TargetImageBuilder(targetImageName(0, 0)).build(),
+                                        new TargetImageBuilder(targetImageName(0, 1)).build()
                                 }}
                         }),
-                        new SourceImage.Builder(sourceImageName(1)).build(),
+                        new SourceImageBuilder(sourceImageName(1)).build(),
                         null
                 ),
         };
